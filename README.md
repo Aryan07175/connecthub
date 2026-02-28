@@ -56,6 +56,7 @@ To see these structures in action, fire up the development environment:
     ```
 3.  **Explore:**
     Head over to [http://localhost:3000](http://localhost:3000).
+    you can check over here as well https://connecthub-one.vercel.app/trending
 
 ---
 
