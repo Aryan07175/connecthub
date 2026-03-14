@@ -1,50 +1,41 @@
-# ConnectHub: A Mini Social Network Engine
+ instant $O(M)$ path matching where $M$ is the length of the searched prefix.
 
-Welcome to **ConnectHub**. While it looks like a social network, it’s actually a playground for high-performance data structures. 
+3. **Queue** (`lib/data-structures/Queue.ts`)
+   - A classic **First-In-First-Out (FIFO)** queue.
+   - Operates the `/api/notifications` endpoint, simulating delayed background processing of app events.
+# ConnectHub - Mini Social Network Engine
 
-Most modern apps rely on heavy databases to do the heavy lifting. ConnectHub takes a different approach: it’s built from the ground up using **in-memory, custom-built TypeScript data structures**. By moving logic into optimized Singletons, we achieve lightning-fast operations that standard arrays or databases often struggle with.
+ConnectHub is a demonstration project built with **Next.js** to explicitly showcase the algorithmic benefits of five key data structures built from scratch in TypeScript. 
 
----
+By avoiding complex external databases during development, this project runs all data logic through in-memory isolated global Singletons.
 
-## 🧠 The Algorithmic Backbone
+## The 5 Core Data Structures
 
-This project isn't just about UI; it's a showcase of five core data structures built from scratch to handle specific social networking challenges.
+This application was architected around building and integrating these data structures natively:
 
-### 1. The Social Graph (`lib/data-structures/Graph.ts`)
-**Purpose:** Managing relationships.
-Instead of expensive SQL joins, we use an **Adjacency List** to map friendships. 
-* **The Logic:** Powers the `/api/friends` endpoint.
-* **The Magic:** Uses **Breadth-First Search (BFS)** to find "Friends of Friends" (2nd-degree connections) in a fraction of the time a traditional query would take.
+1. **Graph** (`lib/data-structures/Graph.ts`)
+   - Uses an **Adjacency List** to track unidirectional and bidirectional friendships.
+   - Powers the `/api/friends` endpoint.
+   - Calculates 2nd-degree friend connections using **Breadth-First Search (BFS)**.
 
-### 2. Prefix Tree / Trie (`lib/data-structures/Trie.ts`)
-**Purpose:** Instant Search & Autocomplete.
-Traditional search filters usually have a complexity of O(N x L). Our Trie brings that down to **O(M)**, where M is simply the length of the word you're typing.
-* **The Logic:** Powers the `/api/search` endpoint.
-* **The Magic:** As you type, the search predicts your intent instantly by traversing character nodes.
+2. **Prefix Tree / Trie** (`lib/data-structures/Trie.ts`)
+   - Optimized for instant character-by-character autocomplete Search.
+   - Powers the `/api/search` endpoint.
+   - Returns
+4. **Stack** (`lib/data-structures/Stack.ts`)
+   - A classic **Last-In-First-Out (LIFO)** stack.
+   - Wrapped by a custom React Hook (`useNavigationStack`) on the `/profile/[id]` page to maintain a strict local "Back" history decoupled from the browser.
 
-### 3. Doubly Linked List (`lib/data-structures/LinkedList.ts`)
-**Purpose:** The Infinite Feed.
-Standard arrays suffer from a "re-indexing penalty" when you add items to the front. 
-* **The Logic:** Wrapped by the `useInfiniteFeed` hook on the `/feed` page.
-* **The Magic:** New posts are injected at the `head` in **O(1) constant time**. Whether you have 10 posts or 10,000, the speed remains identical.
-
-### 4. Stack (`lib/data-structures/Stack.ts`)
-**Purpose:** Internal Navigation History.
-We wanted a "Back" button that didn't rely on the browser's messy history.
-* **The Logic:** Managed by the `useNavigationStack` hook on profile pages.
-* **The Magic:** Uses **Last-In-First-Out (LIFO)** logic to track exactly which profiles you've visited in a strict, predictable sequence.
-
-### 5. Queue (`lib/data-structures/Queue.ts`)
-**Purpose:** Background Notifications.
-Not everything needs to happen at once. 
-* **The Logic:** Operates the `/api/notifications` endpoint.
-* **The Magic:** Follows **First-In-First-Out (FIFO)** logic to simulate a background processing buffer, ensuring app events are handled in the exact order they occurred without locking the main UI.
+5. **Doubly Linked List** (`lib/data-structures/LinkedList.ts`)
+   - A dynamic chain to model moving chronological data.
+   - Wrapped by a custom React Hook (`useInfiniteFeed`) on the `/feed` page.
+   - Post insertions execute in constant time $O(1)$ by injecting directly at the `head`, avoiding the heavy array re-indexing penalty.
 
 ---
 
 ## 🚀 Getting Started
 
-To see these structures in action, fire up the development environment:
+First, install the necessary dependencies:
 
 1.  **Install dependencies:**
     ```bash
@@ -58,12 +49,19 @@ To see these structures in action, fire up the development environment:
     Head over to [http://localhost:3000](http://localhost:3000).
     you can check over here as well https://connecthub-one.vercel.app/trending
 
----
+Start the Next.js development server:
 
-## 🗺 App Roadmap
+```bash
+npm run dev
+```
 
-* **`/feed`**: Test the Linked List by spamming new posts.
-* **`/search`**: Experience the O(M) speed of the Trie.
-* **`/profile/[id]`**: Navigate through users to see the Stack in action.
-* **`/notifications`**: Watch the FIFO Queue process events.
-* **`/trending`**: A baseline comparison using standard Array sorting.
+Open [http://localhost:3000](http://localhost:3000) with your browser to explore the ConnectHub UI.
+
+### 🗺 App Layout
+
+- `/login` & `/register` - Mock authentication screens.
+- `/feed` - Test the Doubly Linked List performance by posting.
+- `/search` - Experience instant Trie string searching.
+- `/notifications` - View the FIFO Queue.
+- `/trending` - Demonstrates standard Array sorting.
+- `/profile/[id]` - Explore Stack-driven component history navigation!
